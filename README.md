@@ -1,0 +1,149 @@
+# VMware Aria Operations — AI-Powered Reporting
+
+An AI-powered CLI tool that generates professional PDF performance reports from VMware Aria Operations data. Uses natural language prompts to select metrics, build charts, and write executive summaries automatically.
+
+---
+
+## What It Does
+
+- **Option 1 — Local CSV**: Load exported CSV files from your machine → describe charts in plain English → generate PDF report
+- **Option 2 — Live Aria Operations**: Connect to Aria Operations API → select clusters → describe what you want → fetch live metrics → generate PDF report
+
+Charts are built using Plotly and the PDF is rendered with ReportLab. An LLM (via GitHub Models) handles natural language parsing, metric matching, and executive summary writing.
+
+---
+
+## Prerequisites
+
+- Python 3.11 or later
+- A GitHub account (for the free GitHub Models API — no paid subscription needed)
+- Access to VMware Aria Operations (only required for Option 2 / live data)
+
+---
+
+## Setup
+
+### 1. Clone or unzip the project
+
+```bash
+cd ai-x-vmware
+```
+
+### 2. Create a virtual environment and install dependencies
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate        # macOS / Linux
+# .venv\Scripts\activate         # Windows
+
+pip install -r requirements.txt
+```
+
+### 3. Configure environment variables
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and fill in your values:
+
+```
+# GitHub Models (required — get your token at github.com → Settings → Developer settings → Personal access tokens)
+GITHUB_TOKEN=your_github_token_here
+
+# VMware Aria Operations (only required for Option 2 — live data)
+ARIA_BASE_URL=https://<your-aria-host>/suite-api/api
+ARIA_USERNAME=your_username
+ARIA_PASSWORD=your_password
+
+# App
+APP_ENV=development
+```
+
+**How to get a GitHub token:**
+1. Go to [github.com](https://github.com) → Sign in
+2. Profile picture → **Settings** → **Developer settings** → **Personal access tokens** → **Tokens (classic)**
+3. Click **Generate new token (classic)**
+4. Give it a name, set an expiry — **no scopes needed**, leave all boxes unchecked
+5. Copy the token and paste it as `GITHUB_TOKEN` in your `.env`
+
+### 4. (Optional) Add local CSV files for Option 1
+
+Place any exported CSV files in the `data/` folder. The tool will detect and list them automatically.
+
+---
+
+## Running the Tool
+
+```bash
+source .venv/bin/activate
+python main.py
+```
+
+You will be prompted to choose a data source:
+
+```
+  1. Load local CSV file(s)  (offline / demo)
+  2. Fetch live data from Aria Operations  ⚠  READ-ONLY
+```
+
+### Option 1 — Local CSV
+
+1. Select one or more CSV files from the `data/` folder
+2. Describe the chart(s) you want in plain English, for example:
+   - `"Bar graph of CPU and memory usage per month for the last 6 months"`
+   - `"Line chart of CPU usage over time"`
+3. Confirm the chart spec, add more charts if needed, then type `done`
+4. Enter a report title — the PDF opens automatically
+
+### Option 2 — Live Aria Operations
+
+1. Approve the connection when prompted (read-only, no changes made)
+2. Select which clusters to include
+3. Describe the data and chart you want, for example:
+   - `"Bar chart of CPU and memory workload per month for the last 6 months"`
+   - `"Line chart of disk read and write latency for the last 2 weeks"`
+4. Confirm the metrics to fetch, then confirm the chart spec
+5. Add more charts if needed, then type `done`
+6. Enter a report title — the PDF opens automatically
+
+---
+
+## Output
+
+PDF reports are saved to the `outputs/` folder with versioned filenames:
+
+```
+outputs/
+  Performance_Report_v1.pdf
+  Performance_Report_v2.pdf   ← auto-incremented if title is reused
+```
+
+Each report includes:
+- **Cover page** with title, date, and report description
+- **Executive Summary** with AI-generated narrative and chart index
+- **One chart per page** with title, chart, and caption
+
+---
+
+## Project Structure
+
+```
+ai-x-vmware/
+├── main.py          # CLI entry point and user interaction flow
+├── aria_client.py   # VMware Aria Operations API client (read-only)
+├── llm.py           # GitHub Models (GPT-4o-mini) — NL parsing, metric matching, summary
+├── chart.py         # Plotly chart builder → PNG export
+├── report.py        # ReportLab PDF generator
+├── requirements.txt
+├── .env.example     # Template — copy to .env and fill in your values
+└── data/            # Place local CSV files here for Option 1
+```
+
+---
+
+## Notes
+
+- All Aria Operations access is **read-only** — the tool never modifies your environment
+- SSL verification is disabled in `APP_ENV=development` (self-signed certs). Set `APP_ENV=production` for verified SSL
+- The LLM is used only for: metric matching, chart spec parsing, title correction, and executive summary generation — it never sees your raw infrastructure data
