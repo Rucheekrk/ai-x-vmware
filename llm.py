@@ -1,5 +1,5 @@
 """
-OpenAI GPT-4o-mini helpers.
+GitHub Models (gpt-4o-mini via models.inference.ai.azure.com) helpers.
 - parse_user_request  : natural language → chart spec (columns from DataFrame)
 - match_metrics       : natural language → Aria Operations metric keys
 - generate_summary    : plain-English executive summary
@@ -14,8 +14,11 @@ from aria_client import METRIC_CATALOGUE, ALL_METRICS
 
 load_dotenv()
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-MODEL  = "gpt-4o-mini"
+client = OpenAI(
+    base_url="https://models.inference.ai.azure.com",
+    api_key=os.getenv("GITHUB_TOKEN"),
+)
+MODEL = "gpt-4o-mini"
 
 
 def match_metrics(user_prompt: str, last_days: int = 30) -> tuple[list[str], int]:
