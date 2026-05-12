@@ -6,7 +6,7 @@ An AI-powered CLI tool that generates professional PDF performance reports from 
 
 ## What It Does
 
-- **Option 1 — Local CSV**: Load exported CSV files from your machine → describe charts in plain English → generate PDF report
+- **Option 1 — Local CSV**: Load CSV files from the built-in `data/` folder → describe charts in plain English → generate PDF report. Simply drop any CSV file into the `data/` folder and it will be available to select when you run the tool.
 - **Option 2 — Live Aria Operations**: Connect to Aria Operations API → select clusters → describe what you want → fetch live metrics → generate PDF report
 
 Charts are built using Plotly and the PDF is rendered with ReportLab. An LLM (via GitHub Models) handles natural language parsing, metric matching, and executive summary writing.
@@ -88,6 +88,8 @@ You will be prompted to choose a data source:
 ```
 
 ### Option 1 — Local CSV
+
+> **Before running:** place your CSV file(s) in the `data/` folder at the root of the project. The tool automatically detects all CSV files in that folder and lists them for selection.
 
 1. Select one or more CSV files from the `data/` folder
 2. Describe the chart(s) you want in plain English, for example:
