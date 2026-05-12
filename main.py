@@ -41,7 +41,7 @@ def pick_data_source():
 
     if choice == "2":
         print(
-            "\n⚠  This will connect to https://10.89.19.50 using stored credentials."
+            f"\n⚠  This will connect to {aria_client.BASE_URL} using stored credentials."
             "\n   All operations are READ-ONLY — no changes will be made to Aria Operations."
             "\n   Clusters will be listed for your selection."
         )

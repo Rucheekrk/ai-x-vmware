@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-BASE_URL = os.getenv("ARIA_BASE_URL", "https://10.89.19.50/suite-api/api")
+BASE_URL = os.getenv("ARIA_BASE_URL", "")
 USERNAME = os.getenv("ARIA_USERNAME", "")
 PASSWORD = os.getenv("ARIA_PASSWORD", "")
 DEV_MODE = os.getenv("APP_ENV", "development") == "development"

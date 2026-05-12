@@ -7,4 +7,3 @@ httpx
 python-dotenv
 pillow
 questionary
-pypdf
