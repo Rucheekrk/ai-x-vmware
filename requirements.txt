@@ -1,0 +1,10 @@
+openai
+pandas
+plotly
+kaleido
+reportlab
+httpx
+python-dotenv
+pillow
+questionary
+pypdf

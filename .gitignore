@@ -1,0 +1,10 @@
+.env
+outputs/
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+.claude/
+Demo Recordings/
+Show
+done
