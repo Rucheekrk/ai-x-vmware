@@ -207,7 +207,7 @@ def main():
                 chart_specs.append(spec)
                 print(f"  ✓ Chart built")
             except Exception as e:
-                print(f"  Chart error: {e}")
+                print(f"  ⚠ Chart skipped: {e}")
 
     # Loop for additional charts
     while True:
@@ -227,7 +227,7 @@ def main():
                 chart_specs.append(spec)
                 print(f"  ✓ Chart built")
             except Exception as e:
-                print(f"  Chart error: {e}")
+                print(f"  ⚠ Chart skipped: {e}")
 
     if not chart_paths:
         print("\nNo charts built — nothing to report. Exiting.")

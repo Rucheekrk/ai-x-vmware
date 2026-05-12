@@ -202,13 +202,11 @@ def generate_pdf(
         f"{datetime.now().strftime('%B %d, %Y')}."
     )
 
-    # Vertically centre cover content:
-    # Cover frame height = PAGE_H - B_MARGIN - 1.8in ≈ 8.35in
-    # Estimated content block height ≈ 2.4in (title + rule + date + description)
-    # Top spacer = (frame_height - content_height) / 2
-    cover_frame_h  = PAGE_H - B_MARGIN - 1.8 * inch
-    content_est_h  = 2.4 * inch
-    centre_spacer  = (cover_frame_h - content_est_h) / 2
+    # Vertically centre cover content.
+    # Place the title block at ~38% from the top of the page (just above visual
+    # centre), leaving more breathing room below than above the navy bar.
+    # Fixed spacer avoids under/over-shooting when the title wraps to 2 lines.
+    centre_spacer = 2.0 * inch
 
     story.append(NextPageTemplate("Cover"))
     story += [

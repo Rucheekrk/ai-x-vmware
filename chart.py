@@ -66,6 +66,15 @@ def build_chart(df: pd.DataFrame, spec: dict) -> str:
         # Capture chronological order NOW before any further sorting
         ordered_x = list(dict.fromkeys(plot_df[x_col].tolist()))
 
+    # Guard: skip chart if none of the requested columns exist in the data
+    valid_cols = [c for c in spec["columns"] if c in plot_df.columns]
+    if not valid_cols:
+        raise ValueError(
+            f"No matching columns found for chart '{spec.get('title', '')}'. "
+            f"Requested: {spec['columns']}. "
+            f"Available: {[c for c in plot_df.columns if c not in (x_col, name_col)]}"
+        )
+
     fig = go.Figure()
     color_idx = 0
 
@@ -113,6 +122,21 @@ def build_chart(df: pd.DataFrame, spec: dict) -> str:
         xaxis_cfg["categoryorder"] = "array"
         xaxis_cfg["categoryarray"] = ordered_x
 
+    # Only add % suffix when all plotted columns are percentage-based metrics
+    is_pct = all(
+        "%" in c or "workload" in c.lower() or "pct" in c.lower() or "usage" in c.lower()
+        for c in valid_cols
+    )
+    yaxis_cfg = dict(
+        showgrid=True,
+        gridcolor="#e5e7eb",
+        gridwidth=0.5,
+        linecolor="#d1d5db",
+        tickfont=dict(size=12),
+    )
+    if is_pct:
+        yaxis_cfg["ticksuffix"] = "%"
+
     fig.update_layout(
         # No internal title — the PDF section heading above the chart is the title
         plot_bgcolor="white",
@@ -128,19 +152,12 @@ def build_chart(df: pd.DataFrame, spec: dict) -> str:
         bargap=0.25,              # gap between month groups
         bargroupgap=0.05,         # gap between bars within a group
         xaxis=xaxis_cfg,
-        yaxis=dict(
-            showgrid=True,
-            gridcolor="#e5e7eb",
-            gridwidth=0.5,
-            linecolor="#d1d5db",
-            tickfont=dict(size=12),
-            ticksuffix="%",
-        ),
+        yaxis=yaxis_cfg,
         margin=dict(l=60, r=40, t=40, b=60),
     )
 
     out_path = os.path.join(OUTPUT_DIR, f"{uuid.uuid4().hex}.png")
-    fig.write_image(out_path, format="png", width=1100, height=680, scale=2)
+    fig.write_image(out_path, format="png", width=1100, height=900, scale=2)
     return out_path
 
 
@@ -195,6 +212,9 @@ def _resample_for_bar(
             resampled[name_col] = entity
             frames.append(resampled)
         result = pd.concat(frames, ignore_index=True)
+        # Sort ALL rows by the original datetime column so that months from
+        # different entities appear in a single consistent chronological sequence.
+        result = result.sort_values(x_col).reset_index(drop=True)
     else:
         resampled = (
             df.set_index(x_col)[valid_y]
