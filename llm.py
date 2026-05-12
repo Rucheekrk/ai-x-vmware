@@ -20,7 +20,6 @@ client = OpenAI(
 )
 MODEL = "gpt-4o-mini"
 
-
 def match_metrics(user_prompt: str, last_days: int = 30) -> tuple[list[str], int]:
     """
     Map a natural language request to real Aria Operations metric keys
