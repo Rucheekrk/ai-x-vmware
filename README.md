@@ -13,6 +13,20 @@ Charts are built using Plotly and the PDF is rendered with ReportLab. An LLM (vi
 
 ---
 
+## How to Open a Terminal
+
+All setup and run commands are typed into a terminal (also called a command prompt). Here is how to open one:
+
+**macOS:**
+1. Press `Cmd + Space` to open Spotlight
+2. Type `Terminal` and press `Enter`
+
+**Windows:**
+1. Press the `Windows` key
+2. Type `PowerShell` or `cmd` and press `Enter`
+
+---
+
 ## Prerequisites
 
 - **Python 3.14.3 or later**
@@ -50,6 +64,8 @@ cd ai-x-vmware
 
 ### 2. Create a virtual environment and install dependencies
 
+A virtual environment is an isolated workspace for this project's Python dependencies — it keeps them separate from other Python programs on your machine. Think of it as a clean folder just for this project.
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate        # macOS / Linux
@@ -57,6 +73,11 @@ source .venv/bin/activate        # macOS / Linux
 
 pip install -r requirements.txt
 ```
+
+> **Windows note:** If `python3` is not recognised, try `python` instead:
+> ```bash
+> python -m venv .venv
+> ```
 
 **What gets installed:**
 
@@ -77,6 +98,8 @@ pip install -r requirements.txt
 ```bash
 cp .env.example .env
 ```
+
+The `.env` file is a private configuration file that stores your credentials and settings. It lives only on your machine and is never shared or uploaded anywhere. The `.env.example` file is a blank template — you copy it to `.env` and fill in your own values.
 
 Edit `.env` and fill in your values:
 
@@ -159,6 +182,11 @@ Each report includes:
 - **Executive Summary** with AI-generated narrative and chart index
 - **One chart per page** with title, chart, and caption
 
+**To find and open your PDF:**
+
+- **macOS:** Open Finder → navigate to the `ai-x-vmware` folder → open the `outputs` folder. The PDF will open automatically after generation, or you can double-click it to open in Preview.
+- **Windows:** Open File Explorer → navigate to the `ai-x-vmware` folder → open the `outputs` folder. The PDF will open automatically after generation, or you can double-click it to open in your default PDF viewer.
+
 ---
 
 ## Project Structure
@@ -198,6 +226,33 @@ To switch to a different model, replace that value with any model name supported
 > **No other code changes needed.** The GitHub token and API endpoint stay the same regardless of which model you pick — GitHub Models routes all of them through the same endpoint.
 
 To browse all available models, visit: [github.com/marketplace/models](https://github.com/marketplace/models)
+
+---
+
+## Troubleshooting
+
+**`GITHUB_TOKEN` error / authentication failed**
+- Make sure you have copied `.env.example` to `.env` and filled in your GitHub token
+- Check that the token is pasted correctly with no extra spaces
+- Tokens expire — if yours has expired, generate a new one at github.com → Settings → Developer settings → Personal access tokens
+
+**`python3: command not found` (Windows)**
+- Try using `python` instead of `python3` in all commands
+
+**`pip: command not found`**
+- Make sure you have activated the virtual environment first:
+  - macOS / Linux: `source .venv/bin/activate`
+  - Windows: `.venv\Scripts\activate`
+- You should see `(.venv)` at the start of your terminal line when it is active
+
+**`ModuleNotFoundError` when running `python main.py`**
+- The virtual environment is not active — run the activate command above first, then retry
+
+**PDF does not open automatically**
+- Navigate to the `outputs/` folder inside the project directory and double-click the PDF to open it manually
+
+**Charts missing from the PDF / "Chart skipped" warning**
+- This can happen if the described metric does not match available data — try rephrasing your chart description to match the available columns more closely
 
 ---
 
