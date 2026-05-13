@@ -167,13 +167,37 @@ Each report includes:
 ai-x-vmware/
 ├── main.py          # CLI entry point and user interaction flow
 ├── aria_client.py   # VMware Aria Operations API client (read-only)
-├── llm.py           # GitHub Models (GPT-4o-mini) — NL parsing, metric matching, summary
+├── llm.py           # GitHub Models (Claude 3.5 Sonnet) — NL parsing, metric matching, summary
 ├── chart.py         # Plotly chart builder → PNG export
 ├── report.py        # ReportLab PDF generator
 ├── requirements.txt
 ├── .env.example     # Template — copy to .env and fill in your values
 └── data/            # Place local CSV files here for Option 1
 ```
+
+---
+
+## Changing the AI Model
+
+The model is set in a single line in `llm.py`:
+
+```python
+MODEL = "claude-3-5-sonnet"
+```
+
+To switch to a different model, replace that value with any model name supported by GitHub Models. Some options:
+
+| Model | Description |
+|---|---|
+| `claude-3-5-sonnet` | ✅ Default — best balance of speed and accuracy for JSON parsing and summaries |
+| `claude-3-opus` | Most powerful Claude model — slower, best for complex reasoning |
+| `claude-3-haiku` | Fastest Claude model — good for simple tasks |
+| `gpt-4o` | OpenAI GPT-4o — strong general-purpose model |
+| `gpt-4o-mini` | OpenAI GPT-4o Mini — lightweight and fast |
+
+> **No other code changes needed.** The GitHub token and API endpoint stay the same regardless of which model you pick — GitHub Models routes all of them through the same endpoint.
+
+To browse all available models, visit: [github.com/marketplace/models](https://github.com/marketplace/models)
 
 ---
 
