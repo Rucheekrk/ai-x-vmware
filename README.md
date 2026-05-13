@@ -15,7 +15,26 @@ Charts are built using Plotly and the PDF is rendered with ReportLab. An LLM (vi
 
 ## Prerequisites
 
-- Python 3.11 or later
+- **Python 3.14.3 or later**
+
+  ⚠️ Only follow the steps below if you do not have Python installed on your machine.
+  To check, open terminal and run:
+  ```bash
+  python3 --version
+  ```
+
+  **macOS (via Homebrew):**
+  ```bash
+  # Only install Homebrew if you don't have it AND want to install Python via Homebrew:
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+  # Then install Python:
+  brew install python@3.14
+  ```
+
+  **Direct download (macOS and Windows):**
+  https://www.python.org/downloads/release/python-3143/
+
 - A GitHub account (for the free GitHub Models API — no paid subscription needed)
 - Access to VMware Aria Operations (only required for Option 2 / live data)
 
@@ -38,6 +57,20 @@ source .venv/bin/activate        # macOS / Linux
 
 pip install -r requirements.txt
 ```
+
+**What gets installed:**
+
+| Package | What it does |
+|---|---|
+| `openai` | SDK to communicate with the GitHub Models API (GPT-4o-mini) |
+| `pandas` | Loads and processes CSV data and time-series metrics |
+| `plotly` | Builds the charts (bar, line, area) |
+| `kaleido` | Exports Plotly charts as PNG images for embedding in the PDF |
+| `reportlab` | Generates the professional PDF report |
+| `httpx` | Makes HTTP requests to the VMware Aria Operations API |
+| `python-dotenv` | Loads your `.env` file (credentials and config) |
+| `pillow` | Reads image dimensions when embedding charts into the PDF |
+| `questionary` | Powers the interactive checkbox for CSV file selection |
 
 ### 3. Configure environment variables
 
