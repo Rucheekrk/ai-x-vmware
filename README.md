@@ -62,7 +62,7 @@ pip install -r requirements.txt
 
 | Package | What it does |
 |---|---|
-| `openai` | SDK to communicate with the GitHub Models API (GPT-4o-mini) |
+| `openai` | SDK to communicate with the GitHub Models API (Claude 3.5 Sonnet) |
 | `pandas` | Loads and processes CSV data and time-series metrics |
 | `plotly` | Builds the charts (bar, line, area) |
 | `kaleido` | Exports Plotly charts as PNG images for embedding in the PDF |
