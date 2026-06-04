@@ -18,7 +18,7 @@ client = OpenAI(
     base_url="https://models.inference.ai.azure.com",
     api_key=os.getenv("GITHUB_TOKEN"),
 )
-MODEL = "claude-3-5-sonnet"
+MODEL = "gpt-4o-mini"
 
 def match_metrics(user_prompt: str, last_days: int = 30) -> tuple[list[str], int]:
     """
