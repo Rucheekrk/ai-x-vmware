@@ -15,8 +15,7 @@ from aria_client import METRIC_CATALOGUE, ALL_METRICS
 load_dotenv()
 
 client = OpenAI(
-    base_url="https://models.inference.ai.azure.com",
-    api_key=os.getenv("GITHUB_TOKEN"),
+    api_key=os.getenv("OPENAI_API_KEY"),
 )
 MODEL = "gpt-4o-mini"
 
